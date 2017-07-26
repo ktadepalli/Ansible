@@ -1,5 +1,5 @@
 ---
-- hosts : windows
+- hosts: windows
   
   tasks:
        - name: downloading winscp571setup.exe....
@@ -13,8 +13,7 @@
          raw: 'E:\winscp571setup.exe /silent'
          #raw: 
             #path: 'E:\winscp571setup.exe /Quiet /NoRestart /Full'
-            #state: present          
-
+            #state: present     
 
 
 
