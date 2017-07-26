@@ -1,0 +1,7 @@
+ansible_connection: winrm
+ansible_hosts: windows
+ansible_ssh_pass: 449Kenny.
+ansible_ssh_user: ktadepalli@MHSINDIA.COM
+ansible_winrm_server_cert_validation: ignore
+ansible_winrm_transport: credssp
+remote_port: 5986
