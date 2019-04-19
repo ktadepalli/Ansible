@@ -17,8 +17,8 @@
            image: "{{ image }}"
            wait: true
            region: "{{ region }}"
-           aws_access_key: AKIAJFTNORX5YCHWUX6A
-           aws_secret_key: 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
+           aws_access_key: accesskey
+           aws_secret_key: seckey
            instance_tags:
               application: atpar
            exact_count: 2
