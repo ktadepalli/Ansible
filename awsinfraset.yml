@@ -1,0 +1,63 @@
+---
+   - name: AWS Cloud
+     hosts: localhost
+     gather_facts: false
+     vars:
+        keypair: id_rsa
+        instance_type: t2.micro
+        image: ami-e41b618b
+        region: ap-south-1
+        myip:  192.168.176.18
+     tasks:
+       - name: formation of AWS Cloud formation Template
+         ec2:
+           key_name: "{{ keypair }}"
+           group: CentOS 7 -x86_64- - with Updates HVM-1901_01-AutogenByAWSMP-
+           instance_type: "{{ instance_type }}"
+           image: "{{ image }}"
+           wait: true
+           region: "{{ region }}"
+           aws_access_key: AKIAJFTNORX5YCHWUX6A
+           aws_secret_key: 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
+           instance_tags:
+              application: atpar
+           exact_count: 2
+           count_tag:
+              application: atpar
+         register: ec2
+
+       - name: Store EC2 instance IPs to provision against
+         add_host:
+           hostname: "{{ item.public_ip }}"
+           groupname: ec2_ips
+         with_items: "{{ ec2.tagged_instances }}"
+
+       - name: Wait for servers to come online
+         wait_for:
+           host: "{{ item.public_ip }}"
+           port: 22
+           timeout: 180
+         with_items: "{{ ec2.tagged_instances }}"
+
+       - name: Add EC2 instances as known hosts
+         known_hosts:
+           name: "{{ item.public_ip }}"
+           key: "{{ lookup('pipe', 'ssh-keyscan -t rsa ' + item.public_ip) }}"
+         with_items: "{{ ec2.tagged_instances }}"
+
+   - hosts: ec2_ips
+     remote_user: ec2-user
+     become: True
+     tasks:
+       - name: Install nginx
+         yum:
+           name: nginx
+           state: present
+       - name: Create default index page
+         copy:
+           dest: /usr/share/nginx/html/index.html
+           content: "Howdy from kan"
+       - name: Restart nginx
+         service:
+           name: nginx
+           state: restarted
