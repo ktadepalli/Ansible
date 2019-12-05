@@ -1,0 +1,23 @@
+Git Private Repository creation
+=================================
+
+* ssh-keygen -t rsa -b 4096 -C "kenani101071@gmail.com"
+* Give password there
+* eval "$(ssh-agent -s)"
+* ssh-add ~/.ssh/id_rsa
+* ls -al ~/.ssh
+* cat ~/.ssh/id_rsa.pub
+* copy the content
+* Go to settings section in GitHub and click on SSH and GPS keys and then add the pubkey content over here with 
+  some name in the Title field and Save .
+* ssh -T git@github.com
+* git clone git@github.com:ktadepalli/myprive.git
+* touch helloprive.txt
+* vi helloprive.txt
+* Add content and save
+* git add .
+* git commit -m "my prive file updated"
+* git config --global user.name "ktadepalli"
+* git config --global user.email kenani101071@gmail.com
+* git commit -m "my prive file updated"
+* git push
